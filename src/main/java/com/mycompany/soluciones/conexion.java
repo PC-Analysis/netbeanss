@@ -19,12 +19,12 @@ public class conexion {
     
     
     
-    public void conexion(){
+    public conexion(){
         
         try{
         
-        Class.forName("com.mysql.cj.jdbc.Drive");
-        con=DriverManager.getConnection("jdbc:mysql://localhost/empleado","root","");
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        con=DriverManager.getConnection("jdbc:mysql://localhost/soluciones","root","");
             System.out.println("se ha conectado a la base de datos");
             
             
@@ -37,5 +37,9 @@ public class conexion {
     }
    } 
    
+    public Connection getconnection(){
+        return con;
+        
+    }    
 }
   

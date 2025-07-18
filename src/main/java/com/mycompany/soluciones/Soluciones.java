@@ -11,7 +11,9 @@ package com.mycompany.soluciones;
 public class Soluciones {
 
     public static void main(String[] args) {
-        conexion ca = new conexion();
-        ca.conexion();
+       
     }
+    
 }
+
+
