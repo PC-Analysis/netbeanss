@@ -25,6 +25,7 @@ public class Agencias extends javax.swing.JFrame {
     Statement st;
     ResultSet rs;
     DefaultTableModel modelo;
+    int idc;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Agencias.class.getName());
 
@@ -43,9 +44,10 @@ public class Agencias extends javax.swing.JFrame {
     
     public void Agregar(){
         
+        // obtener la informacion 
         try {
         
-         int registro = Integer.parseInt(id.getText());
+         int registro = Integer.parseInt(id.getText()); //123
         String t1 = txt1.getText();
         String t2 = txt2.getText();
         int t3 = Integer.parseInt(txt3.getText());
@@ -53,11 +55,13 @@ public class Agencias extends javax.swing.JFrame {
         
         //Enviar la informacion a la base de datos 
         
-             String sql = "insert into Agencia (id,empresa,representante,telefono,correo,)value (?,?,?,?,?)";
+             String sql ="insert into agencias (id,empresa,representante,telefono,correo,)value (?,?,?,?,?)";
 
         
-        conet= co.getconnection();
+        conet= co.getConnection();
         PreparedStatement ps= conet.prepareStatement(sql);
+        
+        // Enviar Datos 
         
         ps.setInt(1, registro);
         ps.setString(2,t1);
@@ -65,6 +69,7 @@ public class Agencias extends javax.swing.JFrame {
         ps.setInt(4,t3);
         ps.setString(5,t4);
        
+        // Ejecutar consulta
        ps.execute();
         JOptionPane.showMessageDialog(null, "se ha Realizado el registro");
         
@@ -102,6 +107,8 @@ public class Agencias extends javax.swing.JFrame {
             
         }catch(Exception e){
         
+          
+            
         }
     
     
@@ -205,9 +212,14 @@ public class Agencias extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Id Empresa", "Nombre de Empresa", "Representante Legal", "Telefono ", "Correo"
+                "ID Empresa", "Nombre de Empresa", "Representante Legal", "Telefono ", "Correo"
             }
         ));
+        tregistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tregistroMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tregistro);
 
         jButton2.setText("Eliminar");
@@ -428,7 +440,7 @@ public class Agencias extends javax.swing.JFrame {
     private void AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActionPerformed
 
         Agregar();
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_AgregarActionPerformed
 
     private void txt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt1ActionPerformed
@@ -443,6 +455,26 @@ public class Agencias extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void tregistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tregistroMouseClicked
+       
+        id.setEditable(false);
+        int fila = tregistro.getSelectedRow();
+        if(fila ==-1){
+            
+            JOptionPane.showInputDialog(null,"seleccione una fila" );
+            }else{
+             idc=Integer.parseInt(tregistro.getValueAt(fila,0).toString());
+          String Nombre_de_Empresa = (String) tregistro.getValueAt(fila, 1);
+          String Representante_Legal = (String) tregistro.getValueAt(fila, 2);
+          String Telefono =(String) tregistro.getValueAt(fila, 3);
+          }
+        
+        
+    }//GEN-LAST:event_tregistroMouseClicked
+
+    
+    
+    
     /**
      * @param args the command line arguments
      */

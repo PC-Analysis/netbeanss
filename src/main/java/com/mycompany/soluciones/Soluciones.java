@@ -11,7 +11,8 @@ package com.mycompany.soluciones;
 public class Soluciones {
 
     public static void main(String[] args) {
-       
+       Login lg = new Login();
+       lg.setVisible(true);
     }
     
 }
