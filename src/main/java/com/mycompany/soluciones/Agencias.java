@@ -122,7 +122,7 @@ public class Agencias extends javax.swing.JFrame {
          try {
              int fila = tregistro.getSelectedRow();
         if(fila ==-1){
-            JOptionPane.showMessageDialog(null, "seleccione una fula");
+            JOptionPane.showMessageDialog(null, "seleccione una fila");
             return;
         }
         int id=Integer.parseInt(tregistro.getValueAt(fila,0).toString());
@@ -131,7 +131,7 @@ public class Agencias extends javax.swing.JFrame {
         int t3 = Integer.parseInt(txt3.getText());
         String t4 = txt4.getText();
         
-        String sql= "UPDATE agencia SET empresa=?,representante=?,telefono=?,correo=? WHERE id";
+        String sql= "UPDATE agencias SET empresa=?,representante=?,telefono=?,correo=? WHERE id";
         Connection conet = co.getconnection();
                 PreparedStatement pst= conet.prepareStatement(sql);
                     
@@ -157,7 +157,37 @@ public class Agencias extends javax.swing.JFrame {
          }
     }
          
-    
+        public void eliminar(){
+        try{
+            int fila = tregistro.getSelectedRow();
+        if(fila ==-1){
+         JOptionPane.showMessageDialog(null, "seleccione una fila");
+            return; 
+           }
+            int id=Integer.parseInt(tregistro.getValueAt(fila,0).toString());
+            int confirmacion = JOptionPane.showConfirmDialog(null, "esta seguro de eliminar el registro ?","Confirmar eliminacion",
+                    JOptionPane.YES_NO_OPTION);
+            
+            if(confirmacion ==JOptionPane.YES_OPTION){
+                String sql = "Delete FROM agencias WHERE id=? ";
+                Connection conet = co.getconnection();
+                PreparedStatement pst= conet.prepareStatement(sql);
+                pst.setInt(1,id);
+                int filaseliminadas = pst.executeUpdate();
+                if (filaseliminadas>0){
+                 JOptionPane.showMessageDialog(null,"Registro eliminado");
+                  Limpiar();
+                  consultar();
+            }else {
+                  JOptionPane.showMessageDialog(null,"No se encontro un registro para eliminar");  
+                }
+            }
+        }catch (SQLException e){
+             System.out.println(""+e); 
+             JOptionPane.showMessageDialog(null,"Error al eliminar"+e.getMessage());
+         }
+        }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -464,7 +494,7 @@ public class Agencias extends javax.swing.JFrame {
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       eliminar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActionPerformed
