@@ -492,6 +492,7 @@ public class Base_Datos extends javax.swing.JFrame {
                
            }
            
+           
         }
            
     }//GEN-LAST:event_tregistroMouseClicked

@@ -34,19 +34,29 @@ public class Agencias extends javax.swing.JFrame {
      */
     public Agencias() {
         initComponents();
-        
         consultar();
-        
         setLocationRelativeTo(null);
         setResizable(false);
     }
     
+    public void Limpiar(){
+              
+        while (modelo.getRowCount()>0){
+            modelo.removeRow(0);
+        }
+         id.setText("");
+         txt1.setText("");
+         txt2.setText("");
+         txt3.setText("");
+         txt4.setText("");
+    }       
+    
+        
     
     public void Agregar(){
         
         // obtener la informacion 
         try {
-        
          int registro = Integer.parseInt(id.getText()); //123
         String t1 = txt1.getText();
         String t2 = txt2.getText();
@@ -56,13 +66,10 @@ public class Agencias extends javax.swing.JFrame {
         //Enviar la informacion a la base de datos 
         
              String sql ="insert into agencias (id,empresa,representante,telefono,correo,)value (?,?,?,?,?)";
-
-        
+             
         conet= co.getConnection();
         PreparedStatement ps= conet.prepareStatement(sql);
-        
-        // Enviar Datos 
-        
+        // Enviar Datos
         ps.setInt(1, registro);
         ps.setString(2,t1);
         ps.setString(3,t2);
@@ -70,29 +77,28 @@ public class Agencias extends javax.swing.JFrame {
         ps.setString(5,t4);
        
         // Ejecutar consulta
-       ps.execute();
         JOptionPane.showMessageDialog(null, "se ha Realizado el registro");
-        
-            Limpiar();
-            consultar();
+          Limpiar();
+          consultar();  
 
         }catch (SQLException e ){
           JOptionPane.showMessageDialog(null, "No se pudo ingresar"); 
-      
+          System.err.print(""+e);
         }
         
         }
     
     
-         public void consultar(){
+    public void consultar(){
         
         String sql= "select * from agencias";
         try{
             conet=co.getconnection();
             st=conet.createStatement();
             rs=st.executeQuery(sql);
+            
             Object[] persona=new Object[5];
-            modelo= (DefaultTableModel)tregistro.getModel();
+            modelo = (DefaultTableModel)tregistro.getModel();
             while (rs.next()){
                 persona[0]=rs.getInt("id");
                 persona[1]=rs.getString("empresa");
@@ -105,15 +111,52 @@ public class Agencias extends javax.swing.JFrame {
             }
             tregistro.setModel(modelo);
             
-        }catch(Exception e){
-        
-          
+        }catch(Exception e){   
             
         }
     
-    
    }
     
+    
+    public void actualizar(){
+         try {
+             int fila = tregistro.getSelectedRow();
+        if(fila ==-1){
+            JOptionPane.showMessageDialog(null, "seleccione una fula");
+            return;
+        }
+        int id=Integer.parseInt(tregistro.getValueAt(fila,0).toString());
+        String t1 = txt1.getText();
+        String t2 = txt2.getText();
+        int t3 = Integer.parseInt(txt3.getText());
+        String t4 = txt4.getText();
+        
+        String sql= "UPDATE agencia SET empresa=?,representante=?,telefono=?,correo=? WHERE id";
+        Connection conet = co.getconnection();
+                PreparedStatement pst= conet.prepareStatement(sql);
+                    
+        
+        pst.setString(1,t1);
+        pst.setString(2,t2);
+        pst.setInt(3,t3);
+        pst.setString(4,t4);
+        pst.setInt(5, id);
+        
+        int filaactualizada = pst.executeUpdate();
+        if (filaactualizada>0){
+         JOptionPane.showMessageDialog(null,"Registro Actulaizado");
+        Limpiar();
+        consultar();
+        
+        }else{
+            JOptionPane.showMessageDialog(null,"No se encontro un registro para actualizar");  
+        } 
+            
+         }catch (Exception e){
+             System.out.println("Error al actualizar"+e); 
+         }
+    }
+         
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -407,19 +450,6 @@ public class Agencias extends javax.swing.JFrame {
       this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void Limpiar (){
-        while (modelo.getRowCount()>0){
-            modelo.removeRow(0);
-        }
-    id.setText("");
-    txt1.setText("");
-    txt2.setText("");
-    txt3.setText("");
-    txt4.setText("");
-    
-    }
-    
-    
     private void txt4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt4ActionPerformed
@@ -429,8 +459,8 @@ public class Agencias extends javax.swing.JFrame {
     }//GEN-LAST:event_txt2ActionPerformed
 
     private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
-        // TODO add your handling code here:
         Limpiar();
+
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -438,9 +468,7 @@ public class Agencias extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActionPerformed
-
-        Agregar();
-        
+          Agregar();   
     }//GEN-LAST:event_AgregarActionPerformed
 
     private void txt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt1ActionPerformed
@@ -452,7 +480,7 @@ public class Agencias extends javax.swing.JFrame {
     }//GEN-LAST:event_idActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+       actualizar();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void tregistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tregistroMouseClicked
@@ -461,12 +489,15 @@ public class Agencias extends javax.swing.JFrame {
         int fila = tregistro.getSelectedRow();
         if(fila ==-1){
             
-            JOptionPane.showInputDialog(null,"seleccione una fila" );
+            JOptionPane.showMessageDialog(null,"seleccione una fila" );
             }else{
-             idc=Integer.parseInt(tregistro.getValueAt(fila,0).toString());
+             idc =Integer.parseInt(tregistro.getValueAt(fila,0).toString());
           String Nombre_de_Empresa = (String) tregistro.getValueAt(fila, 1);
           String Representante_Legal = (String) tregistro.getValueAt(fila, 2);
           String Telefono =(String) tregistro.getValueAt(fila, 3);
+          String Correo =(String) tregistro.getValueAt(fila, 4);
+          
+               
           }
         
         

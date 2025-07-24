@@ -35,7 +35,7 @@ public class Requerimiento extends javax.swing.JFrame {
     }
 
     
-    public void Requerimiento() throws SQLException{
+    public void Requerimiento() throws SQLException {
         
         String txtnom = txt1.getText();
         String txttel = txt2.getText();
@@ -52,6 +52,7 @@ public class Requerimiento extends javax.swing.JFrame {
         
         
         // Arreglo Boton empresa- hogar
+        // LINEA FALTANTE 
         if(entorno.equalsIgnoreCase("H")){
         rbhogar.setSelected(true);
         rbempresa.setSelected(false);
@@ -59,10 +60,6 @@ public class Requerimiento extends javax.swing.JFrame {
             rbempresa.setSelected(true);
             rbhogar.setSelected(false);
         }
-        
-     
-    
-    
     
     }
     
