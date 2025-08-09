@@ -37,13 +37,10 @@ public class conexion {
     }
    } 
    
-    public Connection getconnection(){
+    public Connection getConnection(){
         return con;
         
     }    
 
-    Connection getConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
   

@@ -27,7 +27,7 @@ public class Agencias extends javax.swing.JFrame {
     DefaultTableModel modelo;
     int idc;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Agencias.class.getName());
+  
 
     /**
      * Creates new form Agencias
@@ -57,7 +57,7 @@ public class Agencias extends javax.swing.JFrame {
         
         // obtener la informacion 
         try {
-         int registro = Integer.parseInt(id.getText()); //123
+          
         String t1 = txt1.getText();
         String t2 = txt2.getText();
         int t3 = Integer.parseInt(txt3.getText());
@@ -65,16 +65,16 @@ public class Agencias extends javax.swing.JFrame {
         
         //Enviar la informacion a la base de datos 
         
-             String sql ="insert into agencias (id,empresa,representante,telefono,correo,)value (?,?,?,?,?)";
+             String sql ="insert into agencias (empresa,representante,telefono,correo,)value (?,?,?,?)";
              
         conet= co.getConnection();
         PreparedStatement ps= conet.prepareStatement(sql);
         // Enviar Datos
-        ps.setInt(1, registro);
-        ps.setString(2,t1);
-        ps.setString(3,t2);
-        ps.setInt(4,t3);
-        ps.setString(5,t4);
+       
+        ps.setString(1,t1);
+        ps.setString(2,t2);
+        ps.setInt(3,t3);
+        ps.setString(4,t4);
        
         // Ejecutar consulta
         JOptionPane.showMessageDialog(null, "se ha Realizado el registro");
@@ -93,7 +93,7 @@ public class Agencias extends javax.swing.JFrame {
         
         String sql= "select * from agencias";
         try{
-            conet=co.getconnection();
+            conet=co.getConnection();
             st=conet.createStatement();
             rs=st.executeQuery(sql);
             
@@ -132,7 +132,7 @@ public class Agencias extends javax.swing.JFrame {
         String t4 = txt4.getText();
         
         String sql= "UPDATE agencias SET empresa=?,representante=?,telefono=?,correo=? WHERE id";
-        Connection conet = co.getconnection();
+        Connection conet = co.getConnection();
                 PreparedStatement pst= conet.prepareStatement(sql);
                     
         
@@ -170,7 +170,7 @@ public class Agencias extends javax.swing.JFrame {
             
             if(confirmacion ==JOptionPane.YES_OPTION){
                 String sql = "Delete FROM agencias WHERE id=? ";
-                Connection conet = co.getconnection();
+                Connection conet = co.getConnection();
                 PreparedStatement pst= conet.prepareStatement(sql);
                 pst.setInt(1,id);
                 int filaseliminadas = pst.executeUpdate();
@@ -536,9 +536,6 @@ public class Agencias extends javax.swing.JFrame {
     
     
     
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -552,13 +549,24 @@ public class Agencias extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Agencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Agencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Agencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Agencias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        //</editor-fold>
+ 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Agencias().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Agencias().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
